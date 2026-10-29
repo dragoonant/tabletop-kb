@@ -37,7 +37,12 @@ Repo `dragoonant/legion-forge` (private), started 2026-10-28 from a **claude.ai 
 | Milestone | Date | Tokens (actual) | Notes |
 |---|---|---|---|
 | Kickoff + KB review | 2026-10-28 | not measured | Two question batches answered; KB copied from mancermundo and extended |
+| M0 scaffold + sources + specs | 2026-10-28/29 | not measured in-session (7 agents: 1 Sonnet, 6 session model) | Mancermundo copied into `legacy/` with a 292-line KEEP/ADAPT/DELETE table; official AMG documents downloaded (Core Rule Book 2026-06-17 and others); primer + leak list; specs 00, 05, 10-14, 20, 40, 50, 60; 56 RULINGs; privacy hook that works in worktrees; shared KB repo created and linked as a submodule |
 
 ## 5. Lessons so far
+- *(M0)* **The product line changed under us.** AMG no longer sells a two-player core set; the entry products are single-faction 600-point Recon starter sets (no vehicles). Research before fixing the first slice: the kickoff default (Empire vs Rebels core set with speeder bikes) did not exist.
+- *(M0)* **AMG card and battle-card PDFs have no text layer.** The Core Rule Book does (keyword glossary pp. 46-61). Battle cards were read by eye from rendered pages, and the Legion HQ 2 list builder's live JS bundle is the only machine-readable card data (909 cards, current to 2026-06-19, Fan-source). It disagreed with the AMG cards on at least two weapons' dice, so primary cards win and every playable army gets an eye check.
+- *(M0)* **The cloud container restarted twice during background agent runs.** Files the agents had written survived, and so did the gitignored downloads; the agents' final summaries in their transcripts did not. Have every agent write its hand-back summary into a file it owns (e.g. `tools/out/<stage>-<agent>.md`), and commit finished work before starting the next batch.
+- *(M0)* Rules primer written straight from the free official rulebook in one agent run; edition history (FFG RRG -> AMG Core Rulebook 2023 -> 2024-26 "new edition" with rolled cover, edge entry, 1000 points, 5 rounds) is in the primer's leak list.
 - **Read the KB before proposing a stack.** The first strategy written for this project, before the KB review, proposed a pnpm monorepo and a 2D PixiJS client. The KB's proven recipe (one Vite + R3F package copied from the newest sibling, 3D from M3, Pages from `main`) replaced it. Ten ports' worth of tested decisions outweigh a fresh design.
 - **The KB lives in sibling repos, not one place**, and the copies drift (README gotcha, 2026-10-28).
