@@ -1,0 +1,30 @@
+# Xross Forge (Xross Stars) — living entry
+
+Repo `dragoonant/xross-forge` (public), started 2026-10-29 from a **claude.ai cloud session**. Decisions: `PLAN.md` (D1-D15); rules: `docs/rules.md`, `docs/rulings.md`; sources: `docs/sources.md`; rights: `docs/rights.md`; donor map: `docs/PORTING.md`. **This entry is updated at the end of every milestone.**
+
+## 1. Overview
+- Xross Stars (クロスタ): a Japanese TCG from Brave group, developed by Game & Co. and SAMURAI KOBO, released 2025-08-22. Cards are real VTubers and streamers (VSPO!, Crazy Raccoon, Neo-Porte, REJECT). Each player has 4 two-sided leaders that awaken when they down an enemy leader, a 50-card deck of attack and memoria cards, and a 5-card tactics deck. PP grow 3/4/5 by round; best of 3 rounds, or a one-round quick match (PLAN D1, `docs/rules.md`).
+- The owner called it "Xross Gates" at kickoff; no game of that name exists, and the owner confirmed Xross Stars (2026-10-29).
+- Owner decisions 2026-10-29 (do not re-ask): real names with our own generated art of each avatar, no cloned voices (D2); **scaffold from lorecannae** over GRAND LINE (D3, owner's suggestion after a side-by-side); **Gemini image API and ElevenLabs run from the cloud session** with keys as environment secrets, not the PC studios (D4, D5); **$25** art and audio budget for the first slice (D6); esports-broadcast look (D7); first slice = the original starters ST01 vs ST02 (D8).
+
+## 2. Donor map
+| Subsystem | Donor | Notes |
+|---|---|---|
+| Infra (ns, rng, harness, test runner, gate, check-pages, stamp-assets, serve) | lorecannae `9c8016d` | Ported in M0; namespace `XS` |
+| Engine contract, ability-authoring guide, UI modules, sim, replay, art/audio tools | lorecannae | ADAPT in M2-M6 per `docs/PORTING.md` |
+| Effects layer (attack arrow, K.O. burst, spotlight, turn ribbon), arena, bug report | GRAND LINE `b816d3c` | Closest game shape: a Japanese leader TCG with a pay-per-card resource |
+
+## 3. Milestone log
+| Milestone | Date | Tokens (actual) | Notes |
+|---|---|---|---|
+| Kickoff + KB review | 2026-10-29 | not measured | Two question batches; scaffold switched from GRAND LINE to lorecannae on the owner's question |
+| M0 sources, rules, rights, scaffold | 2026-10-29 | ~0.55M subagent (rules 0.19M on the session model; rights 0.16M and scaffold 0.19M on Sonnet) plus the coordinator | Three agents in parallel with disjoint files; coordinator did hygiene, API discovery, decklists, PLAN; gate green in a detached worktree |
+
+## 4. Lessons so far
+- *(M0)* **Grep the publisher site's JS bundle for API hosts before planning data entry.** The Next.js chunks of xross-stars.com named `api.xross-stars.com/v1/cards`, `/faq` and `/cards/restrictions`: an unauthenticated JSON API with every card's stats, printed text and awakened stats, plus 136 official FAQ entries. Filters are singular (`product=ST01`, `color=red`); `limit=100&page=N` pages. This replaced the image-reading and fan-bundle routes Legion needed (README gotcha, 2026-10-29).
+- *(M0)* **Image-only PDFs with CID fonts**: `pdftotext` returns nothing and `pdftoppm` prints font errors but still renders legible pages. At 160 dpi an agent read all 19 pages of the Playing Manual by eye. Check one page image before handing them off.
+- *(M0)* **Starter quantities came from the product page's card-list images**, cross-checked two ways: each list sums to 50, and the x2 cards are exactly the API's `is_ace` cards (ACE limit). The ST01/ST02 page lived at `/product/st01-02`, not `/product/ST01` (404). Find the page through a web search when the obvious slug fails.
+- *(M0)* **Give the rules agent the official FAQ from the start.** It wasn't in the brief; the coordinator's check afterwards confirmed 4 of the 7 open rulings and **reversed one default**: R-025 had awakening once per multi-attack card, but FAQ #81 says after each downing attack.
+- *(M0)* **Starters can be illegal as sold.** エナジーチャージャー was banned on 2026-07-13 but ships in both original starters (PLAN D15: play them as printed).
+- *(M0)* The Wayback Machine resets connections from the cloud session; affiliation tags exist in the card API's tag list but not on each card, and no tag filter works (PLAN D13: a hand table).
+- *(M0)* The session's stop hook asks to commit untracked files while background agents are still writing them. Don't commit half-written agent output to quiet it: commit each agent's files by explicit path once it hands back and its gate passes.
