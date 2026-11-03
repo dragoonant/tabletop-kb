@@ -2,6 +2,8 @@
 
 Repo `dragoonant/great-archival-forge` (public), started 2026-10-30 from a **claude.ai cloud session**. Decisions: `PLAN.md` (D1-D11 at kickoff); rules: `docs/rules.md`, `docs/rulings.md`; sources: `docs/sources.md`, `docs/data-sources.md`; rights: `docs/rights.md`; donor map: `docs/PORTING.md`. **This entry is updated at the end of every milestone.**
 
+**Status (2026-11-03): paused, will resume** (owner, 2026-11-03). The repo has only its initial commit (2026-10-30); nothing in the plan below has been built or pushed. The kickoff decisions stand, so the next session starts from them and from the Xross Forge scaffold.
+
 ## 1. Overview
 - Grand Archive: an English-language TCG from Weebs of the Shore. Each player has a champion that levels up through a lineage (level 0 spirit, then levels 1-3), a main deck and a material deck; cards cost memory or reserve; 13 elements (official card API option list, 2026-10-30).
 - **Official card API found at kickoff**: `https://api.gatcg.com/cards/search` and `/option/search`, public JSON, no key (probed 2026-10-30). Card fields include `cost_memory`, `cost_reserve`, `level`, `life`, `power`, `speed`, `durability`, `element`, `classes`, `legality`, `effect_raw`; sets carry a `prefix` (e.g. `PRDSD`).

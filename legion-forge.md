@@ -4,7 +4,7 @@ Repo `dragoonant/legion-forge` (private), started 2026-10-28 from a **claude.ai 
 
 ## 1. Overview
 - Star Wars: Legion (Atomic Mass Games; originally FFG 2018) as a 3D browser game, player vs AI first, hot-seat later, online not planned. Mechanics 1:1 with the current AMG Rules Reference and points; edition pinned and leak list written at M0 after source research.
-- Owner decisions 2026-10-28 (do not re-ask): web/TypeScript; **vs AI first, AI early**, hot-seat later; "maybe public later" but **Mallet posture** (real names; prose ours; no official art) chosen over the Starbound posture; **MGSD figures of recognizable Star Wars designs**; push to `main` after each stage pre-approved, **repo private**, Pages when the owner goes public.
+- Owner decisions 2026-10-28 (do not re-ask): web/TypeScript; **vs AI first, AI early**, hot-seat later; "maybe public later" but **Mallet posture** (real names; prose ours; no official art) chosen over the Starbound posture; **figures of recognizable Star Wars designs in the house figure style** (then the earlier large-head figure style (about 2-2.5 head-heights); since 2026-10-31 the approved style in rules.md rule 7); push to `main` after each stage pre-approved, **repo private** at first; public with Pages since 2026-11-02 (D21, milestone log).
 
 ## 2. Where each subsystem comes from (donor map)
 | Legion subsystem | Closest sibling | What to take |
@@ -60,4 +60,4 @@ Repo `dragoonant/legion-forge` (private), started 2026-10-28 from a **claude.ai 
 - *(M0)* **The cloud container restarted twice during background agent runs.** Files the agents had written survived, and so did the gitignored downloads; the agents' final summaries in their transcripts did not. Have every agent write its hand-back summary into a file it owns (e.g. `tools/out/<stage>-<agent>.md`), and commit finished work before starting the next batch.
 - *(M0)* Rules primer written straight from the free official rulebook in one agent run; edition history (FFG RRG -> AMG Core Rulebook 2023 -> 2024-26 "new edition" with rolled cover, edge entry, 1000 points, 5 rounds) is in the primer's leak list.
 - **Read the KB before proposing a stack.** The first strategy written for this project, before the KB review, proposed a pnpm monorepo and a 2D PixiJS client. The KB's proven recipe (one Vite + R3F package copied from the newest sibling, 3D from M3, Pages from `main`) replaced it. Ten ports' worth of tested decisions outweigh a fresh design.
-- **The KB lives in sibling repos, not one place**, and the copies drift (README gotcha, 2026-10-28).
+- **The KB lived in sibling repos, not one place**, and the copies drifted (2026-10-28). Fixed at M0 (2026-10-29): this repo is now the one canonical copy, linked as a submodule ([gotchas.md](gotchas.md), last section).

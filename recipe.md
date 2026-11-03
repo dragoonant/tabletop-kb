@@ -1,0 +1,14 @@
+# The proven build recipe
+
+What every 3D port since Mallet has done. *(2026-11-03)* Moved out of `README.md` unchanged apart from the art step; card games follow the same order with their first playable table at step 5 ([card-games.md](card-games.md) section 2).
+
+1. **M0 scaffold** copied from the previous sibling (Vite 8 + React 19 + three 0.186 + R3F 9 + drei 10 + zustand 5 + TS 7 strict + Vitest 5 + Playwright + ajv + tsx; `deploy.yml` to Pages; `vite.config.ts` with sub-path `base`, chunk splitting and a second `sounds.html` entry; `playwright.config.ts` with `PW_PORT`; `.gitignore` for secrets, PDFs, `docs/sources/`, `e2e-out`, `tools/out`; `.gitattributes` LF for workflow scripts; `.claude/launch.json`). Write `CLAUDE.md`, `PLAN.md`, `HANDOFF.md`, `STATUS.md`.
+2. **Specs** `docs/spec/00-architecture` (frozen contracts, one pending decision, `legalActions` never empty, rejections never throw, `view(state, seat)`, `query.*` owns every number), `10-rules-core`, `11-missions`, `12-rules-test-checklist` (stable IDs, lean), `13-golden` (a worked turn with forced dice), `20-data-schema` (+ JSON schemas, frozen only after a dry run over every unit in the first slice), `30-figures`, `40-ai`, `50-client`, `60-testing`, plus an edition leak list.
+3. **M1 data** with a `source` per record and `validate:data`.
+4. **M2 engine** (pure reducer, seeded RNG, action log, replay, headless `sim` with invariants and a stall cap, tests named by checklist ID, `action-fuzz`).
+5. **M3 playable slice** on Pages with procedural stand-in figures, a random bot, briefing, objective tracker, dice tray, event feed, explanatory prompts, presentation director with presented-state cursor and bot idle wait, and *(added 2026-11-02)* autosave with Continue ([rules.md](rules.md) rule 22). Card games build it with their first playable table.
+6. **M4 AI** (utility decider in a Web Worker, tiers, `ai-bench` gate: normal beats random >= 95%).
+7. **M5 art** (concepts -> Hunyuan GLBs -> `models:optimize` -> `?gallery` check -> wire), streamed: launch the GLB agent alongside the concept agent, polling the concept folders and queueing each new PNG on whichever GPU frees up first. *(added 2026-11-03)* Concepts follow the figure style and its per-item gate ([rules.md](rules.md) rules 7, 13 and 23). Also terrain and boards, army painter.
+8. **M6 audio** (weapon-flavour map first, manifest, idempotent generator, `measure-audio` trims, `sounds.html`, music director with calm/battle/tense/victory/defeat).
+9. **M7 polish** (*(added 2026-11-01)* any cinematic or second 3D view gets one persistent renderer, a warm-up and the no-new-programs e2e guard from [recipe-scene-start-hitch.md](recipe-scene-start-hitch.md); narration pauses, hover help, settings, end screen, phone layout via Mallet's form-factor layer).
+10. More teams/factions in parallel worktrees, one Workflow run apiece.

@@ -1,0 +1,36 @@
+# Assassin Forge (Assassin's Creed Recollection) — living entry
+
+Repo `dragoonant/assassin-forge` (public), first work commits 2026-10-28 (initial commit 2026-10-29); titled "Recollection Revamp" in its README. Built in a **claude.ai cloud session**: every work commit carries a `Claude-Session: https://claude.ai/code/...` trailer. Rules: `docs/RULES.md`; story: `docs/STORY.md`; art: `docs/ART-DIRECTION.md`; audio: `docs/AUDIO.md`. The repo has no PLAN, STATUS, HANDOFF, NOTICE or TODO file, so no decision log, token figures or owner quotes exist in it (the commit messages are the only record). **This entry is updated at the end of every milestone.**
+
+## 1. Overview
+- The game: *Assassin's Creed Recollection* (Ubisoft, iPad, 2011), a real-time card battle for control of three city regions in Renaissance Italy (README, `docs/RULES.md`). Ubisoft is the publisher and rights holder. The README labels it an "Unofficial fan project for private, non-commercial use", not affiliated with Ubisoft, "Do not distribute it". There is no NOTICE or rights doc, and the source is silent on whether the owner approved that wording.
+- Shape: a two-player, tick-based match (1 day = 60 ticks, 6 ticks/s at normal speed, so a day lasts 10 s). Agents recruit, campaign in a region (max 2 per region), conflict, and rest; sites score at dusk; actions are one-shots. 10 influence controls a region; two regions at dusk wins; 20-day cap. Six specialties (Gold, Crime, Faith, Media, Order, Scholar); decks are "sequences" of 30-60 cards.
+- Rules are tagged **[orig]** (from reviews and the fan wiki), **[fix]** (changed on purpose) or **[decided]** (gap-fills). Fixes: influence past 10 erodes the opponent instead of being wasted; sequences 30-60 cards instead of 50-300; starter sequences instead of random paid packs. Every number lives in `src/engine/config.ts`. The original was reconstructed from secondary sources only; the source names no primary rulebook.
+- Scope in the commits: 39 base cards plus 25 story cards (64 art subjects), 3 starter sequences, a heuristic AI at three difficulties, and an original 16-battle campaign, "The Lodestone" (Venice 1525 to the Sack of Rome 1527), with scenario rules (starting influence, fog, dusk effects, hold-out objectives). Online play is a stated later option (README): the engine is deterministic for a seed.
+- Owner decisions: none recorded in the repo (no dated owner words). The art style choice (see section 4) is in `docs/ART-DIRECTION.md` as a house style "from mallet-42k".
+- Stack: TypeScript, React 18, Vite, Vitest (not the vanilla-JS namespace stack of the lorecannae family). Engine has no UI code; UI, AI and simulators drive it by `apply(state, command)` and `tick(state)`.
+
+## 2. Donor map
+| Subsystem | Donor | Notes |
+|---|---|---|
+| Art style and figure-prompt rules | Mallet 42k (`art/unit-concepts/PROMPTS.md`) | Named in `docs/ART-DIRECTION.md`; this repo used the earlier large-head figure style (about 3 heads tall), not the later approved style (Mallet 42k `docs/FIGURE-STYLE.md`: serious, highly detailed, about 2.8 head-heights) |
+| Art and audio generation | `local-ai-studio` (Flux Studio, Audio Studio on the studio PC) | `scripts/art/generate.mjs`, `scripts/audio/generate.mjs` plus `install.py` installers (WebP; ffmpeg loudness normalise) |
+| Everything else | Not stated | Does not use lorecannae's `XS`-style namespace or harness; the source names no sibling game as a donor |
+
+## 3. Milestone log
+| Milestone | Date | Tokens (actual) | Notes |
+|---|---|---|---|
+| Playable remake: rules, AI, UI (`0c76a7e`) | 2026-10-28 | not recorded | Rules spec, deterministic engine, 39 cards, 3 starters, heuristic AI (3 levels), React UI with day/night timeline and speed control, 19 Vitest tests, `npm run sim` AI-vs-AI balance simulator |
+| Lodestone campaign + art pipeline (`1b0076e`) | 2026-10-28 | not recorded | 16 battles, 25 story cards, campaign map, saved progress, `sim:campaign` to tune difficulty; art prompts for 64 cards and 16 backdrops, a 9-subject proof set, resumable Flux Studio generator with review sheet, WebP installer; UI falls back cleanly with no art |
+| Music and sound effects (`82d5ccb`) | 2026-10-29 | not recorded | Typed log entries (kind + sequence number) so the UI reacts to events without parsing text; sound manager with per-screen music and crossfades, toggles saved in the browser; prompts for 9 music cues and 14 effects (ACE-Step 1.5 Turbo, Stable Audio Open 1.0), 5-cue proof set; silent when no audio installed |
+| GitHub Pages playtest deploy (`6eb4ee8`) | 2026-10-29 | not recorded | Relative asset paths (`base: './'`) so it works under `/assassin-forge/`; workflow runs `npm test`, `npm run build`, deploys on pushes to `main` or `claude/recollection-revamp`, or by hand. Source does not say whether the site is live |
+
+State at origin/main (4 work commits, about 3,000 lines of `src/`, 45 test cases across 4 files): no generated art or audio is committed (`src/assets/` absent; the README says the game runs without it), and the source records no win-rate or simulator results. No unpushed local work: there is no local folder for this game under `C:/Claude Code Projects/`.
+
+## 4. Lessons for the series
+- *(added 2026-10-29, assassin-forge)* **Tag every rule by provenance ([orig] / [fix] / [decided]) when the original has no primary rulebook.** `docs/RULES.md` marks each line as taken from reviews and the fan wiki, deliberately changed, or invented to fill a gap, so later tuning knows which numbers are free to change. Pair it with one `config.ts` that holds every tunable number.
+- *(added 2026-10-29, assassin-forge)* **Emit typed log entries (kind + sequence number) from the engine and let sound and effects key off them.** Commit `82d5ccb` added this before the sound manager, so the UI never parses text; the SFX table in `docs/AUDIO.md` is then a list of `LogKind` values (some sound only for your own moves, some for both sides). Xross Forge reached the same shape (cues per log tag) after a wrong first manifest.
+- *(added 2026-10-29, assassin-forge)* **Build the art and audio loader to degrade to nothing, so the game ships before the assets exist.** The UI shows installed art and falls back cleanly, and the sound manager is silent without audio; the proof set (9 art subjects, 5 audio cues) is generated and approved before the full batch (README, `docs/AUDIO.md` workflow).
+- *(added 2026-10-29, assassin-forge)* **Give a real-time card game a deterministic tick clock with commands applied between ticks.** A fixed order of operations per tick (actions, recruiting, campaigns, rest, sites; then dusk: sites, win check, income, draw) lets the AI, the simulator and the UI share one engine and makes seeds replayable (`docs/RULES.md` section 8).
+- *(added 2026-10-29, assassin-forge)* **A campaign simulator tunes story difficulty:** `sim:campaign` plays every battle n times with the AI in the player's seat and prints win rates (commit `1b0076e`). The results are not recorded in the repo.
+- *(added 2026-10-29, assassin-forge)* **A GitHub Pages build under a repo subpath needs relative asset paths** (`base: './'` in `vite.config.ts`, commit `6eb4ee8`), and the workflow runs the tests before it deploys.

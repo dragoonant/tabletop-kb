@@ -47,9 +47,9 @@ Sources read for this entry: CLAUDE.md, HANDOFF.md, PLAN.md, STATUS.md, README.m
 
 ## 4. Art pipeline
 **Figures (31 GLBs)**
-1. Style: MGSD (super-deformed model-kit look), owner decision 2026-10-13: about 2-2.5 heads tall, huge head/helmet, stubby legs, oversized hands and weapons, Master Grade panel lines.
-2. Concepts: Gemini (Pro) in Claude in Chrome on the Windows GPU PC, one chat per faction. First prompt attached the approved MGSD style image and a photo of the real miniature as shape references. Variants made by editing the previous image. Two-hue palette per faction so a hue-band recolour could work (Terran steel blue/gunmetal, Zerg violet/bone, Protoss gold/deep blue with cyan glow).
-3. Prompt wording: "super-deformed SD Gundam style model kit figure (Bandai MGSD line)", "the helmet is the biggest part of the figure", "no lettering", "exactly ONE single figure, centred", round black base, white background.
+1. Style: the earlier large-head figure style (about 2-2.5 head-heights), owner decision 2026-10-13: huge head/helmet, very short legs, oversized hands and weapons, model-kit panel lines. Superseded 2026-10-31 by rules.md rule 7.
+2. Concepts: Gemini (Pro) in Claude in Chrome on the Windows GPU PC, one chat per faction. First prompt attached the then-approved style image and a photo of the real miniature as shape references. Variants made by editing the previous image. Two-hue palette per faction so a hue-band recolour could work (Terran steel blue/gunmetal, Zerg violet/bone, Protoss gold/deep blue with cyan glow).
+3. Prompt wording: a model-kit brand-line style label (now banned, rules.md rule 23), "the helmet is the biggest part of the figure", "no lettering", "exactly ONE single figure, centred", round black base, white background.
 4. SDXL fallback produced batch-3 concepts when Chrome was unreachable; later redone with Gemini.
 5. 3D: Hunyuan3D (2.0 cutout and paint, 2.1 shape and finalize), local, then `tools/models/optimize.mjs` (meshopt).
 6. Review: `art/models-staging/REVIEW.md` is a gate table per batch (concept head ratio, mesh faithfulness, ship or redo). Contact sheets checked before wiring.
@@ -73,7 +73,7 @@ Sources read for this entry: CLAUDE.md, HANDOFF.md, PLAN.md, STATUS.md, README.m
 - CI `.github/workflows/deploy.yml`: `npm ci`, typecheck, unit tests, build, Pages deploy on push to `main`. No e2e, sim or bench in CI.
 
 ## 7. Milestone history and final state
-- M0 (10-13): skeleton from Fell-in, specs, checklist, audio manager, music. M1: data schema frozen after dry run. M2: engine, sim 60/60. M3: playable client with MGSD figure batches 1-4. M4: utility AI (normal 99%, easy 97% vs random). M5: themed boards, 16 then 44 terrain models, skill popups. M8: terrain pass v2 (Hunyuan) on a second PC (RTX 3080 10 GB). M9 (10-16/17): engine wiring, Wave 2 armies, rules corrections, "Sunken Shrine" map.
+- M0 (10-13): skeleton from Fell-in, specs, checklist, audio manager, music. M1: data schema frozen after dry run. M2: engine, sim 60/60. M3: playable client with figure batches 1-4. M4: utility AI (normal 99%, easy 97% vs random). M5: themed boards, 16 then 44 terrain models, skill popups. M8: terrain pass v2 (Hunyuan) on a second PC (RTX 3080 10 GB). M9 (10-16/17): engine wiring, Wave 2 armies, rules corrections, "Sunken Shrine" map.
 - Final commit `80f57c3`. Typecheck clean, build OK, e2e passes, playable on Pages.
 - Not yet: owner playtest gate for the AI and listen of `sounds.html`; turret yaw never seen live; first-weapon grants spent per action not per Batch; no standard-scale army presets; open AI items in `tools/out/ai-followups.md`.
 
@@ -98,4 +98,14 @@ Sources read for this entry: CLAUDE.md, HANDOFF.md, PLAN.md, STATUS.md, README.m
 - Hunyuan3D itself is not in the repo; HANDOFF.md documents its install on a second PC (pinned `transformers 4.48.3`, `diffusers 0.32.2`).
 
 ## 10. StarCraft-TMG folder
-Pre-kickoff research and handoff folder, not a git repo: an earlier `HANDOFF.md`, an earlier `docs/KNOWLEDGE-BASE.md`, `docs/spec/sources/SC-SOURCES.md` (first-pass source map), `community/bsdata` (BattleScribe/New Recruit community data, cross-check only, never committed), `refs-local/` (miniature photo references plus an MGSD style image, never committed), and a gitignored secrets file. Not-Enough-Minerals is a superset of its docs; HANDOFF.md says to rename the folder to the chosen title before `git init`, which is how the game folder originated.
+Pre-kickoff research and handoff folder, not a git repo: an earlier `HANDOFF.md`, an earlier `docs/KNOWLEDGE-BASE.md`, `docs/spec/sources/SC-SOURCES.md` (first-pass source map), `community/bsdata` (BattleScribe/New Recruit community data, cross-check only, never committed), `refs-local/` (miniature photo references plus a style reference image, never committed), and a gitignored secrets file. Not-Enough-Minerals is a superset of its docs; HANDOFF.md says to rename the folder to the chosen title before `git init`, which is how the game folder originated.
+
+## 11. Notes from its own KB section 10 that this entry lacked
+*(folded in 2026-11-03 from the old `lessons-since-2026-10-17.md`, compiled 2026-10-26)*
+- **Overnight Gemini stalls after about an hour:** the Windows session showed `lockapp.exe`, the Gemini tab reported `visibilityState=hidden`, and the upload menu stopped opening. Keep-awake does not stop the screen lock. Plan browser-driven generation for when the owner is at the PC, or ask the owner to disable the screen lock; an agent that tried a synthetic paste to inject files was correctly blocked by the safety check. Fall back to local img2img from an approved concept.
+- **Claude in Chrome may default to the owner's Mac browser:** `list_connected_browsers`, then `select_browser` the Windows one before any Gemini work; the first screenshot of a freshly opened Gemini tab can time out while the page loads (retry, use `get_page_text` meanwhile).
+- **Source sites behind a Cloudflare waiting room** return a ~22 KB HTML page with HTTP 200 on rapid curl bursts: check every download starts with `%PDF` and retry with a 20 s backoff (all 12 PDFs landed that way).
+- **Restate standing approvals with their date inside every art prompt:** art agents refused web reference downloads "without chat approval" although the owner approved at kickoff.
+- **Plan the figure list from the data ids at M1** (variants have their own ids; alias every variant to its base GLB in the manifest on day one): 11 of 31 ids stayed procedural after batches planned from the box contents.
+- **Rename the project folder by copying and moving the session with `change_directory` before `git init`;** moving the folder mid-workflow lost a run.
+- Owner asked for two phone notifications (playable on Pages; run stopped), auto mode with keep-awake.

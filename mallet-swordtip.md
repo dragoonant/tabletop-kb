@@ -1,0 +1,49 @@
+# Mallet Swordtip (Warhammer Age of Sigmar 4th edition Spearhead) — living entry
+
+Repo `dragoonant/mallet-swordtip` (public), started 2026-10-29 as a fork of `dragoonant/mallet-42k` (kept as the `upstream` remote; forked at `2ee8fd2`, first commit `7c7f11e`). Where it was built: the source does not say for most commits; the figure pipeline runs on the owner's Windows PC with the GPU (`docs/HANDOFF-hunyuan-install.md`), and the newest commit carries a `Claude-Session: https://claude.ai/code/...` line. Decisions: `PLAN.md`; current state: `HANDOFF.md` (per-stage log F0-F18) and `STATUS.md` (its top note says the text below the note is stale 42k text); rules: `docs/spec/` (`11-spearhead.md`, `13-engine-port-plan.md`, `factions/*.md`); agent rules: `CLAUDE.md`. **This entry is updated at the end of every milestone.**
+
+## 1. Overview
+- A browser/3D port (Vite + React + R3F + Three, TypeScript strict, Vitest, Playwright, GitHub Pages at `https://dragoonant.github.io/mallet-swordtip/`) of **Games Workshop's Age of Sigmar 4th edition Spearhead**: fixed small forces, 4 battle rounds, a 30" x 22" realm battlefield (`docs/spec/11-spearhead.md` SPH-1.1), played against a utility AI or hotseat. Unofficial fan project: mechanics 1:1, all prose in our own words (README, `CLAUDE.md` IP rule). The name parodies "Spearhead" (`PLAN.md`).
+- Owner decisions 2026-10-29 (`PLAN.md`; do not re-ask): rules are AoS 4th edition Spearhead ported 1:1 with own-words text; repo public, forked from Mallet 42k; start with **Cities of Sigmar vs Orruk Warclans**, then Gloomspite Gitz, Slaves to Darkness, Kharadron Overlords / Fyreslayers, Lumineth, "and later every Spearhead"; no owner PDFs (GW's free core rules PDF plus Wahapedia `aos4` pages, read through the browser because WebFetch gets 403); figures in the house figure style by the same Hunyuan pipeline as 42k; priority **playable first**.
+- Owner standing rules copied into `CLAUDE.md`: "playable first" (2026-09-13: run stages lean, tests only protect a working build); metered plan, so the main loop writes workflow scripts and reads JSON, Sonnet does implementation, one stage at a time, at most 8 agents, commit and push to `main` after each stage (pre-approved).
+- Reached by 2026-10-31 (F18): **25 armies** playable (HANDOFF F18), two realm sides (Aqshy, Ghyran), battle tactic and twist cards, phone layout. Engine contracts are frozen (`src/engine/{types,actions,events,hooks,rng,decider,index}.ts`). Newest commit `ef433f6` (2026-11-03) ports the 42k phone camera and defaults the opponent to a bot with a random army.
+- Open items in HANDOFF "Next": a 25-army balance matrix (the F18 five are untested AI-vs-AI), art and audio for the F18 armies, the Kharadron bot never uses Ply the Skies (`tests/engine/kharadron.test.ts` KO-BT-3), ability buttons show only the name, the phone board is small while a prompt is open.
+- Unpushed local work: `C:/Claude Code Projects/Mallet-Swordtip` is a checkout at `7e942fd`, one commit behind `origin/main` (`ef433f6`); `git log origin/main..HEAD` there showed nothing ahead (its `origin/main` ref may be stale).
+
+## 2. Donor map
+| Subsystem | Donor | Notes |
+|---|---|---|
+| Whole repo: client shell, board/camera/terrain rendering, dice tray, audio, presentation director, save/continue, phone layout, Pages deploy, Playwright helpers, workflow scripts (`tools/workflows/`) | Mallet 42k | `PLAN.md` "carries over as-is". Renamed: package, Vite base `/mallet-swordtip/`, titles, PWA manifest; localStorage keys became `swordtip:*` / `swordtip.*` so saves never collide with 42k on the shared `dragoonant.github.io` origin (HANDOFF F0). JSON schema `$id`s still read `mallet42k.dev` (left alone) |
+| Engine pieces: dice, measurement/coherency, LoS, attack sequence, 2D6 charges, pile-in, AI deciders, action log, seeded RNG | Mallet 42k | `PLAN.md` "adapted". Rewritten for AoS in F2 (hit, wound, rend/save, ward, damage, crits) |
+| 40k factions, missions, terrain, tests, tools | Mallet 42k | Deleted at F2 wave 3; the 42k handoff, plan and rules specs are archived in `docs/history/` (`42k-spec`, commit `14bcaa4`) |
+| Figure pipeline (Gemini concept, then Hunyuan3D shape and paint, GLB, repaint) | Mallet 42k | Same local Hunyuan install (`docs/HANDOFF-hunyuan-install.md`, two venvs outside the repo). The figure-models-v2 handoff in `docs/` is a 42k-era file naming 42k factions |
+| Local audio tools (`tools/local-audio/`) and sounds | Mallet 42k tooling, new AoS content | F5 "Spearhead sounds generated locally" |
+| Phone camera (one finger pans unless dragging a model, placement area or move range; two fingers pinch, twist, tilt) | Mallet 42k `470098d`, ported 2026-11-03 | Commit `ef433f6`; camera spec adapted to the swordtip start screen |
+| `docs/FIGURE-STYLE.md`, `docs/figure-style-reference.jpg` | Mallet 42k `docs/FIGURE-STYLE.md` | Swordtip's copy equals the local 42k copy once line endings are ignored (diff run 2026-11-03), so it is the same file, not a variant. Locked in 2026-10-31: "Lock it in. Those are way better." Approved style: serious, highly detailed, about 2.8 head-heights, head about 35% of height, very broad shoulders, covered or stern face. The five approved test figures stay in 42k `art/unit-concepts/style-tests/`. Swordtip's `CLAUDE.md` and `PLAN.md` point at the doc |
+| Rules engine, data and specs for AoS (hero phase, priority roll and double turns, battle tactic cards, realm twist deck, reinforcements, regiment ability and enhancement, 4 rounds) | New | `PLAN.md` "New"; 25 faction hook files in `src/engine/factions/<id>.ts` |
+
+## 3. Milestone log
+| Milestone | Date | Tokens (actual) | Notes |
+|---|---|---|---|
+| F0 fork | 2026-10-29 | not recorded | Renamed repo, saves namespaced, Pages deploy kept (`7c7f11e`). `PLAN.md` estimate to F5: 5-7M tokens ("42k took ≈9M to M5") |
+| F1 Spearhead spec | 2026-10-29 | not recorded | Rules spec, faction specs, test checklist, engine port plan; 42k specs archived |
+| F2 engine (3 waves) | 2026-10-29 | not recorded | 40k content deleted; Cities of Sigmar vs Ironjawz sim to round 4 with no invariant violations; hotseat and bot Playwright games |
+| F4 cards, figures, fantasy board | 2026-10-29/30 | not recorded | CARD-001..027 tests; QA pass fixed title art, camera, labels |
+| F5-F6 polish, sounds, Slaves to Darkness, Fyreslayers | 2026-10-30 | not recorded | Auto-place and auto-deploy; unit letters for repeated units |
+| F7-F8 AI, Kruleboyz, Gloomspite, Lumineth, Kharadron | 2026-10-30 | not recorded | Eight armies; stand-in figures until GLBs landed |
+| F9-F10 audit, 8-army balance, Ghyran, objective-aware AI | 2026-10-30 | not recorded | `docs/balance.md` matrix (672 games, 0 violations) |
+| F11-F12 Stormcast, Skaven, Seraphon, Soulblight | 2026-10-30/31 | not recorded | Twelve armies. Pages deploy of `0b71ab9` failed because new GLBs and mp3s were untracked; file-reading tests now warn under `CI` |
+| F13-F14 Khorne, Nurgle, Nighthaunt, Sylvaneth | 2026-10-30/31 | not recorded | Sixteen armies; 12-army matrix (1,584 games); 93 test files / 1,321 tests |
+| F15-F16 Daughters, Idoneth, Tzeentch, Ossiarch | 2026-10-30/31 | not recorded | Twenty armies; Call for Reinforcements fix after Khorne scored 6.1% |
+| F17 last five specs, rules audit, 20-army matrix | 2026-10-30/31 | not recorded | 3,800 games, 0 invariant violations |
+| F18 Slaanesh, Hashut, Flesh-eater Courts, Ogors, Sons of Behemat | 2026-10-31 | not recorded | Twenty-five armies (`37949db`); Flesh-eater and Ogor figures (`ef34f22`, `7e942fd`) were made before the style change |
+| Phone camera port from 42k | 2026-11-03 | not recorded | `ef433f6`; opponent defaults to Bot with a random army |
+
+## 4. Lessons for the series
+- *(added 2026-11-03, mallet-swordtip)* **A fork inherits stale docs; put a dated warning at the top of each one.** `STATUS.md` keeps the 42k text under a note saying it is stale, and the 42k handoff and specs moved to `docs/history/`. `CLAUDE.md` fixes the read order (HANDOFF, STATUS, PLAN, spec).
+- *(added 2026-10-31, mallet-swordtip)* **A new style rule does not fix figures already made; say so in the commit.** The approved figure style landed (`3a5c818`) after eight Flesh-eater and Ogor figures were generated; their commit says "made before the style change; kept as is for now". The F6-F8 figures used the earlier large-head style (about 2-2.5 head-heights), and `docs/spec/30-figures.md` still gives head about 40% of height. No regeneration pass is recorded in the source.
+- *(added 2026-10-31, mallet-swordtip)* **Copy the shared style doc into each sibling repo, but name one owner.** Swordtip's `docs/FIGURE-STYLE.md` matches the 42k file, and the approved test images live only in 42k. Any later edit to the style must be made in both.
+- *(added 2026-10-30, mallet-swordtip)* **Untracked art or audio breaks CI tests that read files from disk.** F12's deploy failed on five tests; they now warn when `CI` is set and a file is missing, and a missing GLB or mp3 falls back to a stand-in figure or silence. F14 and F16 added a test that serves 404 for every GLB and mp3.
+- *(added 2026-10-30, mallet-swordtip)* **A balance matrix finds engine bugs, not just tuning.** In the 16-army matrix Khorne scored 6.1%; part of that was a reserve-placement bug (Flesh Hounds never offered back), fixed in F16 by packing oval and mixed bases by their real footprints.
+- *(added 2026-10-30, mallet-swordtip)* **A QA bot that clicks the first option never reaches the optional rules.** HANDOFF F6-F18 lists abilities no scripted human game used (Fearless Invaders, Fyresteel Throwing Axes, Cloud of Bats); `f13-pickers.spec.ts` covers the pickers only.
+- *(added 2026-10-30, mallet-swordtip)* **Do not click a disabled End-phase button while the bot is thinking.** F8's playthrough waited until the whole test timed out ("target crashed"); the loop now clicks only on the human's decisions.
