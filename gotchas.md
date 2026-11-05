@@ -12,6 +12,8 @@
 - *(added 2026-11-03, shadowforge)* **An auditor that reads compiled ability functions gives false FAILs when helper sugar wraps them in closures** (318 false FAILs on 2026-10-29); audit the authored spec, not the compiled function.
 
 ## Client and presentation
+- *(added 2026-11-04, assembly-forge)* **A `<Suspense fallback={standIn}>` around a GLB shows the stand-in every time a model is first used**, for example a machine deploying for the first time in a match. Preload at startup, make the loading fallback `null`, keep the stand-in for a failed load only ([rules.md](rules.md) rule 26).
+- *(added 2026-11-04, assembly-forge)* **A left-drag pan and a middle-drag rotate is the wrong mouse map**: the owner wants middle pans, right rotates, left picks, with the left pan kept only for two-button mice ([rules.md](rules.md) rule 27).
 - *(added 2026-11-04, assembly-forge)* **Phones select text on a long press unless the stylesheet forbids it**, and the iOS callout and tap highlight come with it; the owner called it "super annoying". The CSS block and the gate are in [rules.md](rules.md) rule 24.
 - *(added 2026-11-04, assembly-forge)* **A clickable figure, or an invisible hit capsule around one, steals taps meant for the tiles behind it**, and picking becomes hard exactly where the board is busiest. Put the pointer handlers on the tiles only and resolve every tap by hex ([rules.md](rules.md) rule 25).
 - Bot acting ahead of animations; results drawn behind the prompt that asks about them.

@@ -7,7 +7,7 @@ First written 2026-10-17 for the Kill Team project ("wh40k-murder-squad"), exten
 ## Where to start
 | File | What it holds |
 |---|---|
-| [rules.md](rules.md) | **The owner's standing rules 1-25.** Apply without re-asking. Includes the figure style (rule 7), the words never to put in an image prompt (rule 23), no text selection on a long press (rule 24) and picking units by their tile only (rule 25). |
+| [rules.md](rules.md) | **The owner's standing rules 1-27.** Apply without re-asking. Includes the figure style (rule 7), the words never to put in an image prompt (rule 23), no text selection on a long press (rule 24), picking units by their tile only (rule 25), loading a model before showing it (rule 26) and the mouse controls (rule 27). |
 | [recipe.md](recipe.md) | The proven build recipe, M0 to M7, that every 3D port since Mallet has followed. |
 | [gotchas.md](gotchas.md) | Gotchas that bit more than one project, grouped by area. |
 | [recipe-scene-start-hitch.md](recipe-scene-start-hitch.md) | Any three.js / R3F game: no freeze when a cinematic or new scene starts, and no choppy frames on phones. |
