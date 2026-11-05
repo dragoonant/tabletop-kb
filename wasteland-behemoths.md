@@ -1,6 +1,6 @@
 # Wasteland Behemoths — living entry
 
-Repo `dragoonant/gammarauders` (private), started 2026-11-05 from a **claude.ai cloud session**. Work is on branch `claude/wasteland-behemoths`, which was not merged and not on Pages as of 2026-11-05 (`9581e4d`).
+Repo `dragoonant/gammarauders` (private as of 2026-11-05), started 2026-11-05 from a **claude.ai cloud session**. On 2026-11-05 the owner chose "Merge to main now". `main` is at `7230e78`, and the deploy workflow has published `gh-pages`. Pages will serve the game at `https://dragoonant.github.io/gammarauders/` once the owner makes the repo public (owner's choice 2026-11-05, "You make it public"). Whether that has happened is not recorded yet.
 Decisions: `PLAN.md` (D1-D8). Rules: `docs/spec/10-rules.md` (rule ids, balance record B-1..B-3, rulings). State: `STATUS.md`. **This entry is updated at the end of every milestone.**
 
 ## 1. Overview
@@ -23,6 +23,7 @@ Decisions: `PLAN.md` (D1-D8). Rules: `docs/spec/10-rules.md` (rule ids, balance 
 | First playable (engine, AI, SVG client) | 2026-11-05 | not measured (coordinator only, no sub-agents) | Engine, 66-card deck, symmetric map generator, heuristic AI (`planAction`: graft by card value, move by a position score of wells + attack value − threat, fire at the best expected damage, tactics by simple triggers), and an SVG board with a side panel. A 6-turn scripted browser game ran with no console errors and no sideways scroll at 390 px |
 | Seat balance | 2026-11-05 | — | 200 AI games per seat count: seat 1 won 63.5% of 2-player games. +1 energy per later seat alone changed almost nothing (61.5%). Adding 1 stun to the first player's opening turn gave 54/46, with 3p and 4p close to even (spec B-1) |
 | KB conformance | 2026-11-05 | not measured (coordinator only) | Rule 22 envelope, Continue naming sides/round/turn/VP/time, replace-confirm, damaged/finished/refused-storage messages; rule 24 CSS and listeners; rule 25 tile-only picking with a hex inspector; rule 8 (no `title` tooltips, numbers from engine queries); spec with rule ids; sim invariants; save round-trip and replay test; bench vs random 100/100; 6 Playwright e2e; CLAUDE/PLAN/STATUS; KB submodule; deploy workflow (`9581e4d`) |
+| Merge + first deploy | 2026-11-05 | small (coordinator) | Fast-forwarded `main` to `7230e78`. Deploy run 42058901011 succeeded on its first attempt in about 40 s: typecheck, `npm test`, `playwright install --with-deps chromium` (16 s), e2e (9 s), build, force-push to `gh-pages`. Pages serving is waiting on the repo going public |
 
 ## 4. Gates (2026-11-05)
 - `npm test`: 17 Vitest tests named by rule id. They include 30 AI games (2–4 players) with invariants checked after every action: card conservation (66), hand limit, energy cap, hull within 1..max, no shared or impassable hexes. Games averaged 10.8 rounds (9–14), and all 30 were won on VP.
