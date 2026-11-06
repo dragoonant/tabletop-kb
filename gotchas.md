@@ -13,6 +13,7 @@
 - *(added 2026-11-05, wasteland-behemoths)* **Run a seat-balance sim with the first AI, and test each fix separately.** 200 AI-vs-AI games per seat count showed the first player winning 63.5% of 2-player games. Extra starting energy for later seats barely moved it (61.5%). A one-hex opening-move penalty fixed it (54%). Record the per-step table in the spec ([wasteland-behemoths.md](wasteland-behemoths.md)).
 
 ## Client and presentation
+- *(added 2026-11-06, virtually-off)* **Additive effect materials need `fog: false`**, or they turn into solid walls of fog colour at a distance. **Polled input misses taps shorter than a frame**: keep a per-frame taps set alongside the held-keys set.
 - *(added 2026-11-04, assembly-forge)* **A `<Suspense fallback={standIn}>` around a GLB shows the stand-in every time a model is first used**, for example a machine deploying for the first time in a match. Preload at startup, make the loading fallback `null`, keep the stand-in for a failed load only ([rules.md](rules.md) rule 26).
 - *(added 2026-11-04, assembly-forge)* **A left-drag pan and a middle-drag rotate is the wrong mouse map**: the owner wants middle pans, right rotates, left picks, with the left pan kept only for two-button mice ([rules.md](rules.md) rule 27).
 - *(added 2026-11-04, assembly-forge)* **Phones select text on a long press unless the stylesheet forbids it**, and the iOS callout and tap highlight come with it; the owner called it "super annoying". The CSS block and the gate are in [rules.md](rules.md) rule 24.
@@ -45,6 +46,7 @@
 - *(added 2026-10-26)* The Audio Studio existed only on an unmerged worktree branch of the `3D Model Generation` repo (`claude/ai-audio-generation-packages-2714d8`, worktree under `.claude/worktrees/`) as of 2026-10-26; a worktree cleanup would delete the only checked-out copy. Check `curl http://localhost:7890/api/status` first and do not modify that repo from a game project. No later source says whether it was merged.
 
 ## Windows and local tooling
+- *(added 2026-11-06, virtually-off)* **A hidden Claude Browser pane runs `requestAnimationFrame` at about 1 fps.** Drive real-time games through a deterministic `advance(seconds)` hook rather than wall-clock waits and held keys.
 - PowerShell 5.1 writes a UTF-8 BOM (Python `json.load` fails); Git Bash `/c/...` paths break Windows Python; Git Bash eats backslashes in `sed -i`; `/tmp` is invisible to node; the built-in browser pane cannot drag three.js models (use Playwright `page.mouse` with >= 10 steps) and can lose WebGL (use `npx playwright screenshot`).
 - *(added 2026-10-26)* **Stripped-backslash folders:** Mallet-42k and Fell-in both ended with directories named after a Windows path with the backslashes removed (Fell-in's was `C:iews`), apparently from a path written through shell escaping. Write Windows paths with the Write tool or forward slashes, and check `git status` for stray top-level folders.
 - Playwright port reuse serves a stale sibling build; give each worktree its own port. CI runners are about 2x slower (30 s vitest timeout, raised AI timing ceilings).
