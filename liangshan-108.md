@@ -11,8 +11,10 @@ An original browser strategy game set in the public-domain novel *Water Margin*,
 | Milestone | Date | Tokens (actual) | Notes |
 |---|---|---|---|
 | Kickoff: research + questions | 2026-11-07 | not measured | Complaint research from 6 readable sources; two question batches of 4; the owner chose the bigger scope on two of them (full map, all 108 heroes) |
-| M0 specs + M1 data (2 Sonnet in parallel) | 2026-11-07 | running | A frozen data contract in the shared brief (`docs/briefs/overnight-2026-11-07.md`: hero, court and map record shapes, closed skill list) lets the spec agent and the data agent start together |
+| M0 specs + M1 data (2 Sonnet in parallel) | 2026-11-07 | ~0.25M + ~0.20M (~19 and ~10 min) | A frozen data contract in the shared brief (`docs/briefs/overnight-2026-11-07.md`: hero, court and map record shapes, closed skill list) let the spec agent and the data agent start together. Data: 108 heroes (23 late joiners), 19 court, 22 rivals, 48 prefectures, validator clean. Specs: 148 rule ids, a C1-C13 trace table, a script-checked golden month and battle round; 24 OPEN rulings. Sources: Wikipedia tables, not the novel chapter by chapter |
+| M2 engine + greedy AI + sim (1 Sonnet) | 2026-11-07 | running | |
 
 ## 3. Lessons for the series
 - *(added 2026-11-07, liangshan-108)* **For a spiritual successor, research the original's complaints before the first question batch.** A complaint table with sources and ids turns "make it better than the original" into requirements that rules can cite, and it showed which mechanics people loved and must keep (sworn brotherhood gated by personality).
 - *(added 2026-11-07, liangshan-108)* **A game without its own repo yet can live on an orphan branch of a sibling repo** (`git worktree add --orphan -b <branch> <path>`, git 2.42+). The branch holds only the new game, so it moves later with one `git push <new-remote> <branch>:main`, and the sibling's `deploy.yml` (on `main` only) never fires for it.
+- *(added 2026-11-07, liangshan-108)* **Check a kickoff brief's examples against the source before freezing it.** The brief offered Chao Gai as a starting chieftain, but he is not one of the 108 Stars (he dies before the stone tablet names them), so the data agent rightly left him out of the 108 and the spec agent had to substitute. One lookup at brief time would have saved an open owner question.
