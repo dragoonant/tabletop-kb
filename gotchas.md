@@ -27,6 +27,10 @@
 - *(added 2026-11-05, wasteland-behemoths)* **A control that stays enabled while an action animates swallows clicks silently.** End Turn looked live during a move animation, but the busy guard dropped the click. Re-render (disable) the controls when an action starts. The e2e only caught it once it waited for the next round instead of the first enabled button.
 - *(added 2026-11-05, wasteland-behemoths)* **Rule 25 on a 2D SVG board:** `pointer-events: none` on the token and effects layers, with handlers on the tile groups only. Gate it with `document.elementFromPoint` at a token's centre returning its tile. **Rule 8 sweeps must include SVG `<title>` children**, which browsers also show as native tooltips.
 - *(added 2026-11-07, officers-of-the-han)* **Screens built by parallel agents collide on generic class names** (`.hud`, `.ticker`, `.actions`, `.chip`) and look fine alone; prefix per screen and integrate through the real client, not a lab page. **Pass a saved state to a screen on mount only**: as a live prop it re-runs setup on every autosave. See [officers-of-the-han.md](officers-of-the-han.md) §4.
+- *(added 2026-11-07, officers-of-the-han)* **SVG maps on phones:**
+  - Never put `feTurbulence`/`feDisplacementMap` (or any filter) on a layer that pans; browsers re-rasterise it every frame. Bake the wobble into the path.
+  - Pan and zoom with one `matrix()` on a `<g>`, written once per rAF from refs. Don't use React state, and don't change the `viewBox`: a viewBox change re-lays out every `<text>`.
+  - CDP CPU throttling does not slow raster work, so measure `RasterTask` time from a trace as well as frame times (`officers-of-the-han` `tools/perf/map-perf.mjs`).
 
 ## Figures, art and the GPU
 - *(added 2026-11-03)* **The figure style is [rules.md](rules.md) rules 7 and 23.** Changing the style doc does not fix figures that were already generated: record which figures predate the style and regenerate them (Mallet Swordtip `ef34f22`, 2026-10-31).
