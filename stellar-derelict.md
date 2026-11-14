@@ -2,8 +2,9 @@
 
 Repo `dragoonant/StellarDerelict` (public since 2026-11-13; live at https://dragoonant.github.io/StellarDerelict/),
 started 2026-11-12 from a **claude.ai cloud session**.
-Decisions: `PLAN.md` (D1–D8). Rules: `docs/spec/10-rules.md` (rule ids, balance B-0..B-5, rulings). Look:
-`docs/spec/50-presentation.md`. State: `STATUS.md`.
+Decisions: `PLAN.md` (D1–D8). Rules: `docs/spec/10-rules.md` (rule ids, balance B-0..B-8, the boarding run R-1..R-5,
+rulings); missions in specs 11–13 with their own balance tables. Look: `docs/spec/50-presentation.md` (the Molt seat is
+MOLT-1..5). State: `STATUS.md`.
 
 ## 1. Overview
 - **Live:** https://dragoonant.github.io/StellarDerelict/ (public since 2026-11-13). Owner after the first playtest with
@@ -42,6 +43,8 @@ Decisions: `PLAN.md` (D1–D8). Rules: `docs/spec/10-rules.md` (rule ids, balanc
 | M5 figures (GPU PC) | 2026-11-12 | session model only | 44 Flux klein concepts (image edit with the style reference, about 26 s per 4), one re-roll (the sergeant's maul never appeared until the weapon line led the prompt); Hunyuan 2.1 shape / 2.0 paint / finalize for 11 models in about 25 min of GPU; props decimated at the shape stage; gallery gate on close-ups |
 | M6 audio (GPU PC) | 2026-11-12 | session model only | 79 Audio Studio jobs (Stable Audio Open 5 s each, ACE-Step 10 s a track, Qwen voice design 8 s a line), about 20 min of GPU; three takes for two effects, one layered transient; levelled by kind; enabled, not verified by ear |
 | Pages live, first owner playtest | 2026-11-13 | session model only | Repo made public; Pages had been left on the "GitHub Actions" build type, so the gh-pages pushes never served (one `PUT` to the Pages API fixed it). The owner played the live build and approved the prototype |
+| Visor mode, TOP DOWN (owner requests) | 2026-11-14 | session model only | First-person helmet view with brackets and engine odds; a north-up top-down button. Owner: "It works great." |
+| M7 missions, Molt seat, boarding run | 2026-11-14 | session model only (PC session, about 5 hours) | Two more missions (Cold Berth, Last Light) with their own balance tables; the Warden policy made mission-generic through `missionPlan` and `aiHints` in the data (Dead Reckoning's sim count identical before and after); a playable Molt seat against the squad AI; a three-mission boarding run with survivors carried over; a debrief tallied from events; a `cpSpent` event. 204 unit tests, 27 e2e |
 
 ## 4. Lessons for the series
 - *(added 2026-11-13, stellar-derelict)* **The gh-pages push route still needs one Pages setting.** The workflow
@@ -94,4 +97,22 @@ Decisions: `PLAN.md` (D1–D8). Rules: `docs/spec/10-rules.md` (rule ids, balanc
   but marked as measured with the weak policy.
 - *(added 2026-11-13, stellar-derelict)* **A bench policy that actually uses every action finds client bugs.** The
   utility Wardens scorched often enough to show that the presented state never spent a scorcher charge.
+- *(added 2026-11-14, stellar-derelict M7)* **When spawn points can be blocked, the spawn rate is not a balance lever.**
+  Doubling arrivals (2 → 3 a round, alarm 3 → 4) changed the Warden win rate by under one point on two maps, and halving
+  the alarm rate changed nothing: the sim's event counts showed 50–100 `pingHeld` events a game, because the scripted
+  Molt parks contacts on their ducts and an occupied duct is not open (P-2). Count the held-over spawns before touching
+  rates; on these maps the levers were geometry (how many lanes reach the squad's file unseen) and the start positions.
+- *(added 2026-11-14, stellar-derelict M7)* **Make a scripted side mission-generic by moving its constants into the
+  mission data, then prove it with an identical sim count.** The Warden policy carried Dead Reckoning's terminal ids
+  and formation squares as constants. They became `aiHints` in the mission JSON plus a `missionPlan` derived from the
+  terminals and sealed doors; the 400-game sim gave the same 171 wins before and after, so every earlier balance row
+  still stands. New maps then only need hints (or none: the policy falls back to generic goals).
+- *(added 2026-11-14, stellar-derelict M7)* **Geometry sets the difficulty of a corridor map more than its numbers.** An
+  open hall with pillars: 0% Warden wins (flanks everywhere). Three lanes each way: 90% (nothing can approach a file
+  that looks down every lane). Five by five lanes: 25%. Five by four: 49%, in band. For a spine map, two side doors into
+  the one-wide spine took the AI squad from 46% to 25% on their own; removing them beat every number change.
+- *(added 2026-11-14, stellar-derelict M7)* **A sim that takes a JSON override of the mission makes map tuning a loop of
+  minutes.** `--override '{...}'` / `--override-file` (deep-merged into the registered mission) and `--roster a,b` (a
+  run's short-handed squad) let five variants run in parallel without touching the data files; the adopted one is then
+  written back and the rejected ones go into the mission spec's balance table with their numbers.
 
