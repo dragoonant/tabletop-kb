@@ -51,6 +51,9 @@
 - *(added 2026-10-26, Mallet M12)* **iOS Safari resumes an AudioContext only from `touchend`/`pointerup`/`click`:** keep the unlock listeners for the session and retry. Details: [mallet-42k.md](mallet-42k.md).
 - *(added 2026-10-26)* The Audio Studio existed only on an unmerged worktree branch of the `3D Model Generation` repo (`claude/ai-audio-generation-packages-2714d8`, worktree under `.claude/worktrees/`) as of 2026-10-26; a worktree cleanup would delete the only checked-out copy. Check `curl http://localhost:7890/api/status` first and do not modify that repo from a game project. No later source says whether it was merged.
 
+- *(added 2026-11-15, annals-of-scrivenearth; found on EVILAEGIS)* **ffmpeg `-ac 1` downmixes after the `-af` chain with -3 dB coefficients, so a limiter in `-af` does not hold the ceiling.** Mix to mono inside the chain first (`pan=mono|c0=0.5*c0+0.5*c1`) and put `aresample=48000` first.
+- *(added 2026-11-15, annals-of-scrivenearth; found on EVILAEGIS)* **Ungated K-weighted loudness under-reads 1-2 s effects by up to 10 dB.** BS.1770-4 gating (`tools/audio/measure-lib.mjs` in that repo) took the levelled spread of 30 effects from 8 dB to 1.3 dB.
+
 ## Windows and local tooling
 - *(added 2026-11-06, virtually-off)* **A hidden Claude Browser pane runs `requestAnimationFrame` at about 1 fps.** Drive real-time games through a deterministic `advance(seconds)` hook rather than wall-clock waits and held keys.
 - PowerShell 5.1 writes a UTF-8 BOM (Python `json.load` fails); Git Bash `/c/...` paths break Windows Python; Git Bash eats backslashes in `sed -i`; `/tmp` is invisible to node; the built-in browser pane cannot drag three.js models (use Playwright `page.mouse` with >= 10 steps) and can lose WebGL (use `npx playwright screenshot`).
