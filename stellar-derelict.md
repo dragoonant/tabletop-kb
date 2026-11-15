@@ -44,6 +44,7 @@ MOLT-1..5). State: `STATUS.md`.
 | M6 audio (GPU PC) | 2026-11-12 | session model only | 79 Audio Studio jobs (Stable Audio Open 5 s each, ACE-Step 10 s a track, Qwen voice design 8 s a line), about 20 min of GPU; three takes for two effects, one layered transient; levelled by kind; enabled, not verified by ear |
 | Pages live, first owner playtest | 2026-11-13 | session model only | Repo made public; Pages had been left on the "GitHub Actions" build type, so the gh-pages pushes never served (one `PUT` to the Pages API fixed it). The owner played the live build and approved the prototype |
 | Visor mode, TOP DOWN (owner requests) | 2026-11-14 | session model only | First-person helmet view with brackets and engine odds; a north-up top-down button. Owner: "It works great." |
+| M8 audio through ElevenLabs | 2026-11-15 | session model only (PC session) | The owner handed over a one-day ElevenLabs key ("make it as fully featured as possible"). 121 files in one background run (61 effects at 10 credits a second, 7 tracks at 12.5 a second, 53 lines at a credit a character, about 11,400 of the Starter plan's 40,512 by the subscription counter; four near-silent takes re-rolled); six voices designed from the manifest descriptions with the characters' own lines as preview text and adopted unheard; carrier lines per Warden, a briefing narration per mission, two new effects. Not verified by ear |
 | M7 missions, Molt seat, boarding run | 2026-11-14 | session model only (PC session, about 5 hours) | Two more missions (Cold Berth, Last Light) with their own balance tables; the Warden policy made mission-generic through `missionPlan` and `aiHints` in the data (Dead Reckoning's sim count identical before and after); a playable Molt seat against the squad AI; a three-mission boarding run with survivors carried over; a debrief tallied from events; a `cpSpent` event. 204 unit tests, 27 e2e |
 
 ## 4. Lessons for the series
@@ -62,6 +63,16 @@ MOLT-1..5). State: `STATUS.md`.
 - *(added 2026-11-12, stellar-derelict M5)* **FLUX.2 klein image-edit copies the reference's props.** Handcuffs, a
   hose and a skull buckle from the style photo kept appearing; a long shared prompt body pushed the per-figure weapon
   line out of the picture (no maul in 4 of 4). Put the weapon line first in the per-figure text and name both hands.
+- *(added 2026-11-15, stellar-derelict M8)* **A one-day API key is a budget problem first.** Before planning a
+  regeneration, probe one request of each kind and read the `character-cost` header (ElevenLabs: effects 10 credits a
+  second, music 12.5 a second, speech a credit a character, voice design about its preview text); a `--dry-run` that
+  prints the estimate and a `--budget` stop turned 121 files into one unattended background run. Keep the key in the
+  environment of that one command (`export KEY=$(cat scratchpad/key)`), never in a repo file; the dry-run test asserts
+  the log never contains `sk_`.
+- *(added 2026-11-15, stellar-derelict M8)* **Design voices from the manifest, with the characters' own lines as the
+  preview text,** and record the adopted voice id in the manifest's cast table so every line of a speaker is one voice
+  and a re-roll of one line matches the rest. Carrier lines per Warden (instead of one neutral "carrier" voice) cost
+  twenty short lines and remove the only voice that did not belong to anyone.
 - *(added 2026-11-12, stellar-derelict M6)* **Generated audio needs levelling before anyone listens.** Stable Audio
   Open takes ranged from -11 to -56 LUFS for the same prompt family (two of 54 files were effectively silent), and
   ACE-Step tracks from -13 to -28 LUFS with peaks over 0 dBFS. Level by kind in the measure pass (effects -18 LUFS,
