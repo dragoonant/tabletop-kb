@@ -45,9 +45,33 @@ MOLT-1..5). State: `STATUS.md`.
 | Pages live, first owner playtest | 2026-11-13 | session model only | Repo made public; Pages had been left on the "GitHub Actions" build type, so the gh-pages pushes never served (one `PUT` to the Pages API fixed it). The owner played the live build and approved the prototype |
 | Visor mode, TOP DOWN (owner requests) | 2026-11-14 | session model only | First-person helmet view with brackets and engine odds; a north-up top-down button. Owner: "It works great." |
 | M8 audio through ElevenLabs | 2026-11-15 | session model only (PC session) | The owner handed over a one-day ElevenLabs key ("make it as fully featured as possible"). 121 files in one background run (61 effects at 10 credits a second, 7 tracks at 12.5 a second, 53 lines at a credit a character, about 11,400 of the Starter plan's 40,512 by the subscription counter; four near-silent takes re-rolled); six voices designed from the manifest descriptions with the characters' own lines as preview text and adopted unheard; carrier lines per Warden, a briefing narration per mission, two new effects. Not verified by ear |
+| M9 graphics pass (Flux Studio) | 2026-11-15 | session model only (PC session) | Owner: "Let's do a graphics pass too. Use evilaegis. Flux. And Gemini if needed." 28 images in one background batch (112 candidates, about 12 min of GPU, no failures, no re-rolls; Gemini not needed): 9 greyscale board textures tinted with the state colours, 8 faces (image edits of the figures' picked concepts), 8 stills shown as sensor feeds, 3 scar decals; scars tallied from engine events; `art.html` review page; a link-preview card. Spec `docs/spec/70-art.md` (ART-1..8). Checked on the real GPU by headless Chromium on D3D11. Not yet seen by the owner |
 | M7 missions, Molt seat, boarding run | 2026-11-14 | session model only (PC session, about 5 hours) | Two more missions (Cold Berth, Last Light) with their own balance tables; the Warden policy made mission-generic through `missionPlan` and `aiHints` in the data (Dead Reckoning's sim count identical before and after); a playable Molt seat against the squad AI; a three-mission boarding run with survivors carried over; a debrief tallied from events; a `cpSpent` event. 204 unit tests, 27 e2e |
 
 ## 4. Lessons for the series
+- *(added 2026-11-15, stellar-derelict M9)* **Generated textures go in as greyscale multipliers, not as pictures.**
+  Publish each board texture greyscale, stretched and levelled to one mean (0.5), load it as plain numbers
+  (`NoColorSpace`) and multiply it with the colour the flat surface already had, times one gain. Every state read the
+  game had (seen, mapped, sealed, torn, purged) survives untouched, one tint gain suits all nine textures, and the art
+  can be switched off (`?art=none`) to the exact old look. Loading them as sRGB pictures made everything too dark and
+  needed a different gain per texture.
+- *(added 2026-11-15, stellar-derelict M9)* **A graphics pass on a finished game is mostly wiring, and the generation
+  is the cheap part.** 28 Flux jobs took 12 minutes in the background; the manifest, the publish recipes, the loader, the
+  screens, the tests and the docs took the rest of the session. Start the batch first (one command, candidates to a
+  gitignored folder), write the client while it renders, publish picks kind by kind as each sheet lands, and look at the
+  game after each kind (KB rule 13).
+- *(added 2026-11-15, stellar-derelict M9)* **Make a face from the concept the figure was built from.** Each Warden
+  portrait is a FLUX.2 klein image edit of the picked concept in `art/concepts/picks.json` ("a close-up head-and-shoulders
+  portrait of the same armoured trooper ... the same helmet, pauldrons, pack and paint"), with one line per character for
+  what makes it that one. Five distinct, matching busts in 4 of 4 candidates each, none re-rolled.
+- *(added 2026-11-15, stellar-derelict M9)* **Look at a real-GPU build without the owner: Playwright's Chromium with
+  `--use-angle=d3d11 --enable-gpu --ignore-gpu-blocklist`** renders on the PC's card headless (the renderer string said
+  RTX 5080), so the "only seen on SwiftShader" caveat can be closed from a PC session. Drive the screens through the test
+  hooks, save PNGs at desktop, phone landscape and phone portrait, and read them.
+- *(added 2026-11-15, stellar-derelict M9)* **Re-run the unit tests after the last data edit of a stage, not before it.**
+  M8 changed one sound's `promptInfluence` during re-rolls after the unit gate had passed; the commit went out with a
+  failing test and a status line that said 212 passed. M9 found it. The gate list is run once more as the last thing
+  before the commit.
 - *(added 2026-11-13, stellar-derelict)* **The gh-pages push route still needs one Pages setting.** The workflow
   force-pushed `dist/` to `gh-pages` four times with green runs, and the site was a 404: the repo's Pages source was
   the "GitHub Actions" build type (set when the repo was created), which only serves artifacts from
