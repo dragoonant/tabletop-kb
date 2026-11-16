@@ -45,11 +45,28 @@ MOLT-1..5). State: `STATUS.md`.
 | Pages live, first owner playtest | 2026-11-13 | session model only | Repo made public; Pages had been left on the "GitHub Actions" build type, so the gh-pages pushes never served (one `PUT` to the Pages API fixed it). The owner played the live build and approved the prototype |
 | Visor mode, TOP DOWN (owner requests) | 2026-11-14 | session model only | First-person helmet view with brackets and engine odds; a north-up top-down button. Owner: "It works great." |
 | M8 audio through ElevenLabs | 2026-11-15 | session model only (PC session) | The owner handed over a one-day ElevenLabs key ("make it as fully featured as possible"). 121 files in one background run (61 effects at 10 credits a second, 7 tracks at 12.5 a second, 53 lines at a credit a character, about 11,400 of the Starter plan's 40,512 by the subscription counter; four near-silent takes re-rolled); six voices designed from the manifest descriptions with the characters' own lines as preview text and adopted unheard; carrier lines per Warden, a briefing narration per mission, two new effects. Not verified by ear |
+| M10 the wreck pass (owner feedback) | 2026-11-15 | session model only (PC session) | Owner on M9: "The ship looks too plain, lots of blue, it's supposed to be a derelict ship, ruined walls, fires, claw marks etc". 25 more Flux jobs (about 9 min): board textures made again as a wreck and shown in colour (lit where seen, a cold ghost where only mapped), weighted ruined variants, burning breaches with shader flames and light pools, claw-mark and debris decals, new title and mission stills. PLAN D9, spec 70 ART-3 rewritten and ART-9 new |
 | M9 graphics pass (Flux Studio) | 2026-11-15 | session model only (PC session) | Owner: "Let's do a graphics pass too. Use evilaegis. Flux. And Gemini if needed." 28 images in one background batch (112 candidates, about 12 min of GPU, no failures, no re-rolls; Gemini not needed): 9 greyscale board textures tinted with the state colours, 8 faces (image edits of the figures' picked concepts), 8 stills shown as sensor feeds, 3 scar decals; scars tallied from engine events; `art.html` review page; a link-preview card. Spec `docs/spec/70-art.md` (ART-1..8). Checked on the real GPU by headless Chromium on D3D11. Not yet seen by the owner |
 | M7 missions, Molt seat, boarding run | 2026-11-14 | session model only (PC session, about 5 hours) | Two more missions (Cold Berth, Last Light) with their own balance tables; the Warden policy made mission-generic through `missionPlan` and `aiHints` in the data (Dead Reckoning's sim count identical before and after); a playable Molt seat against the squad AI; a three-mission boarding run with survivors carried over; a debrief tallied from events; a `cpSpent` event. 204 unit tests, 27 e2e |
 
 ## 4. Lessons for the series
-- *(added 2026-11-15, stellar-derelict M9)* **Generated textures go in as greyscale multipliers, not as pictures.**
+- *(added 2026-11-15, stellar-derelict M10; this corrects the M9 lesson below)* **Do not put the whole scene under the
+  interface colour, and make damage the subject of the prompt.** M9 shipped clean greyscale plates multiplied with the
+  HUD's teal so every state read survived; the owner's answer was "too plain, lots of blue, it's supposed to be a derelict
+  ship, ruined walls, fires, claw marks". What worked: colour textures lit by brightness (lit where the squad sees, a dim
+  cold ghost where it only has the map: the state read moves from hue to light), rarer ruined variants by weight, damage
+  named as the subject ("four long deep parallel claw gouges raked diagonally right across the plate", "burnt out by an
+  old fire: blackened in a tall fan shape", "a ragged hole ripped through the middle"), and live fire. The setting's
+  word ("derelict") is a brief for the art, not only for the title: check the first textures against it before wiring.
+- *(added 2026-11-15, stellar-derelict M10)* **Scenery fire must not look like the rule's fire.** The game has a
+  "burning square" state. Wreck fires stand in walls (which nobody can enter), their light is a soft round pool that
+  crosses square edges, and the rule state keeps its hard-edged square fill. Ruined walls are painted ruined but keep
+  their full shape: a gap the eye can see through would promise a line of sight the rules do not give.
+- *(added 2026-11-15, stellar-derelict M10)* **A material ref on one face of a multi-material box updates one face.** M9
+  attached six materials to an instanced wall box and kept a ref to the first; the per-frame colour change reached one
+  side and the other three kept their first colour, unnoticed while everything was dark teal. Build the materials once
+  and pass the array (`[side, side, top, top, side, side]`), so the four sides are one object.
+- *(added 2026-11-15, stellar-derelict M9; superseded by the M10 lesson above for anything meant to look like a place)* **Generated textures go in as greyscale multipliers, not as pictures.**
   Publish each board texture greyscale, stretched and levelled to one mean (0.5), load it as plain numbers
   (`NoColorSpace`) and multiply it with the colour the flat surface already had, times one gain. Every state read the
   game had (seen, mapped, sealed, torn, purged) survives untouched, one tint gain suits all nine textures, and the art
