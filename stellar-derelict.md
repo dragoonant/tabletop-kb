@@ -2,11 +2,15 @@
 
 Repo `dragoonant/StellarDerelict` (public since 2026-11-13; live at https://dragoonant.github.io/StellarDerelict/),
 started 2026-11-12 from a **claude.ai cloud session**.
-Decisions: `PLAN.md` (D1–D8). Rules: `docs/spec/10-rules.md` (rule ids, balance B-0..B-8, the boarding run R-1..R-5,
+Decisions: `PLAN.md` (D1–D9). Rules: `docs/spec/10-rules.md` (rule ids, balance B-0..B-8, the boarding run R-1..R-5,
 rulings); missions in specs 11–13 with their own balance tables. Look: `docs/spec/50-presentation.md` (the Molt seat is
-MOLT-1..5). State: `STATUS.md`.
+MOLT-1..5). Audio: `docs/spec/60-audio.md`. Art: `docs/spec/70-art.md` (ART-1..9). State: `STATUS.md`.
 
 ## 1. Overview
+- *(added 2026-11-19)* **Owner's verdict, 2026-11-19, the day M7 to M10 were merged and went live: "This is one of the best games we've developed."**
+  The owner gave no reason, and the session does not know whether the merged build had been played when it was said.
+  Section 5 lists what this build did, as the session's reading. The day before, on five before and after pictures of
+  the M10 wreck look: "Looks right" (2026-11-18).
 - **Live:** https://dragoonant.github.io/StellarDerelict/ (public since 2026-11-13). Owner after the first playtest with
   figures and audio, 2026-11-13: "I'm super impressed with my playtest so far. This is how you get a working prototype."
 - **An original game, not a port.** The owner asked for "a spiritual successor to a board game" and confirmed the guess
@@ -45,11 +49,17 @@ MOLT-1..5). State: `STATUS.md`.
 | Pages live, first owner playtest | 2026-11-13 | session model only | Repo made public; Pages had been left on the "GitHub Actions" build type, so the gh-pages pushes never served (one `PUT` to the Pages API fixed it). The owner played the live build and approved the prototype |
 | Visor mode, TOP DOWN (owner requests) | 2026-11-14 | session model only | First-person helmet view with brackets and engine odds; a north-up top-down button. Owner: "It works great." |
 | M8 audio through ElevenLabs | 2026-11-15 | session model only (PC session) | The owner handed over a one-day ElevenLabs key ("make it as fully featured as possible"). 121 files in one background run (61 effects at 10 credits a second, 7 tracks at 12.5 a second, 53 lines at a credit a character, about 11,400 of the Starter plan's 40,512 by the subscription counter; four near-silent takes re-rolled); six voices designed from the manifest descriptions with the characters' own lines as preview text and adopted unheard; carrier lines per Warden, a briefing narration per mission, two new effects. Not verified by ear |
-| M10 the wreck pass (owner feedback) | 2026-11-15 | session model only (PC session) | Owner on M9: "The ship looks too plain, lots of blue, it's supposed to be a derelict ship, ruined walls, fires, claw marks etc". 25 more Flux jobs (about 9 min): board textures made again as a wreck and shown in colour (lit where seen, a cold ghost where only mapped), weighted ruined variants, burning breaches with shader flames and light pools, claw-mark and debris decals, new title and mission stills. PLAN D9, spec 70 ART-3 rewritten and ART-9 new |
-| M9 graphics pass (Flux Studio) | 2026-11-15 | session model only (PC session) | Owner: "Let's do a graphics pass too. Use evilaegis. Flux. And Gemini if needed." 28 images in one background batch (112 candidates, about 12 min of GPU, no failures, no re-rolls; Gemini not needed): 9 greyscale board textures tinted with the state colours, 8 faces (image edits of the figures' picked concepts), 8 stills shown as sensor feeds, 3 scar decals; scars tallied from engine events; `art.html` review page; a link-preview card. Spec `docs/spec/70-art.md` (ART-1..8). Checked on the real GPU by headless Chromium on D3D11. Not yet seen by the owner |
+| Merge, live, owner's verdict | 2026-11-19 | session model only (PC session) | Pull request 1 of `dragoonant/StellarDerelict` (M7 to M10, five commits) merged into `main` as a merge commit on the owner's "Yes."; the deploy workflow ran the gates and published; the session opened the live site and the game reported 40 images enabled and none failed. Owner the same day: "This is one of the best games we've developed." Audio still not verified by ear |
+| M10 the wreck pass (owner feedback) | 2026-11-15 | session model only (PC session) | Owner on M9: "The ship looks too plain, lots of blue, it's supposed to be a derelict ship, ruined walls, fires, claw marks etc". 25 more Flux jobs (about 9 min): board textures made again as a wreck and shown in colour (lit where seen, a cold ghost where only mapped), weighted ruined variants, burning breaches with shader flames and light pools, claw-mark and debris decals, new title and mission stills. PLAN D9, spec 70 ART-3 rewritten and ART-9 new. Owner on the before and after pictures, 2026-11-18: "Looks right" |
+| M9 graphics pass (Flux Studio) | 2026-11-15 | session model only (PC session) | Owner: "Let's do a graphics pass too. Use evilaegis. Flux. And Gemini if needed." 28 images in one background batch (112 candidates, about 12 min of GPU, no failures, no re-rolls; Gemini not needed): 9 greyscale board textures tinted with the state colours, 8 faces (image edits of the figures' picked concepts), 8 stills shown as sensor feeds, 3 scar decals; scars tallied from engine events; `art.html` review page; a link-preview card. Spec `docs/spec/70-art.md` (ART-1..8). Checked on the real GPU by headless Chromium on D3D11. The owner saw it and asked for the wreck pass (M10) |
 | M7 missions, Molt seat, boarding run | 2026-11-14 | session model only (PC session, about 5 hours) | Two more missions (Cold Berth, Last Light) with their own balance tables; the Warden policy made mission-generic through `missionPlan` and `aiHints` in the data (Dead Reckoning's sim count identical before and after); a playable Molt seat against the squad AI; a three-mission boarding run with survivors carried over; a debrief tallied from events; a `cpSpent` event. 204 unit tests, 27 e2e |
 
 ## 4. Lessons for the series
+- *(added 2026-11-19, stellar-derelict)* **Ask about a look with before and after pictures and one question, and
+  record what the answer was an answer to.** After M10 the session sent five side-by-side pictures (the first pass on
+  the left, the wreck on the right: map, close map, visor, title, briefing) and asked one thing, "Is the wreck look
+  right, or should I push it further?" The owner answered "Looks right" in one message without opening the game.
+  `STATUS.md` records it as an approval of the pictures, not of play, so the next session does not read it as more.
 - *(added 2026-11-15, stellar-derelict M10; this corrects the M9 lesson below)* **Do not put the whole scene under the
   interface colour, and make damage the subject of the prompt.** M9 shipped clean greyscale plates multiplied with the
   HUD's teal so every state read survived; the owner's answer was "too plain, lots of blue, it's supposed to be a derelict
@@ -168,3 +178,36 @@ MOLT-1..5). State: `STATUS.md`.
   run's short-handed squad) let five variants run in parallel without touching the data files; the adopted one is then
   written back and the rejected ones go into the mission spec's balance table with their numbers.
 
+## 5. What this build did (the owner's verdict, and the session's reading of it)
+Owner, 2026-11-19: "This is one of the best games we've developed." No reason came with it, so nothing in this section is the owner's. It is the
+session's list of what this project did, each item taken from the log above, for the next game to copy and for the owner
+to correct.
+
+1. **The premise was the owner's and was kept; everything else was written as a spec.** "I love the setting - aliens vs
+   heavily armored marines, let's keep that" (2026-11-12). Names, numbers, missions and look were written fresh with
+   rule ids, and the tests carry those ids.
+2. **It was playable on Pages on the second day, and every stage after that began with a sentence from the owner.**
+
+   | Date | The owner | What followed |
+   |---|---|---|
+   | 2026-11-13 | "I'm super impressed with my playtest so far. This is how you get a working prototype." | The prototype with figures and audio was the base for everything below |
+   | 2026-11-14 | Asked for a helmet view and a top-down button; then "It works great." | Visor mode, TOP DOWN |
+   | 2026-11-14 | "keep going and finish out the rest of the plan." | M7: two more missions, the Molt seat, the boarding run |
+   | 2026-11-15 | Handed over a one-day ElevenLabs key: "Make it as fully featured as possible" | M8: the whole soundtrack, a voice per character |
+   | 2026-11-15 | "Let's do a graphics pass too. Use evilaegis. Flux. And Gemini if needed." | M9: textures, faces, stills, scars |
+   | 2026-11-15 | "The ship looks too plain, lots of blue, it's supposed to be a derelict ship, ruined walls, fires, claw marks etc" | M10: the wreck pass, the same session |
+   | 2026-11-18 | "Looks right" | Merge and deploy the next day |
+
+3. **Nothing in the shipped build is a stand-in.** 11 generated figure models; 61 effects, 7 music tracks and 53 voice
+   lines in six designed voices; 40 generated images (17 board textures, 8 faces, 8 stills,
+   7 decals); three missions, both seats, a three-mission run, a debrief tallied from events.
+4. **Balance was measured.** Each mission has its own table in its spec with the rejected variants and their numbers;
+   each scripted side was benched against a random opponent; the tier ladder is 73 / 43 / 24% Warden wins.
+5. **The one outright correction to the look was answered in the same session and shown as pictures.** M9 went out under
+   the interface's teal; the owner's sentence became PLAN D9 and M10 the same day (25 Flux jobs, about 9 minutes).
+6. **Cost.** Eight days from the first commit (2026-11-12) to the verdict (2026-11-19), 40 commits on `main` at the merge. Helper
+   agents were used for M1 to M4 only (one Sonnet at a time); every stage after that was the session model alone. GPU time:
+   about 45 minutes for figures and the first audio, about 21 minutes of Flux for the 2D art. ElevenLabs: about 11,400
+   credits. Last gates: 238 unit tests, 31 browser tests, a 300-game sim with 0 violations.
+
+Still open on the day of the verdict: the audio has never been confirmed by ear ([rules.md](rules.md) rule 9).
