@@ -42,7 +42,7 @@ First written 2026-10-17 for the Kill Team project ("wh40k-murder-squad"), exten
 | [great-archival-forge.md](great-archival-forge.md) | Grand Archive TCG (Weebs of the Shore), kickoff 2026-10-30; **paused** | *(added 2026-10-30)* Kickoff only: nothing built or pushed yet (2026-11-03). Official public card API (`api.gatcg.com`); four starters first, then ten competitive decks; archive-vault look; overnight approvals asked in one batch. |
 | [starbound-legions-ip.md](starbound-legions-ip.md) | Starbound Legions (Star Wars: Unlimited) IP posture and UI skin | *(added 2026-10-28)* The only earlier Star Wars port: original "Veil" setting with real names in one switchable file (withdrawable in one commit), NOTICE wording, the palette and colour roles the owner called "appropriate to the Star Wars universe". |
 | [other-projects.md](other-projects.md) | 22 other games (card-game series, arcade remakes, roguelites) | Cross-project conventions, the Overnight Build Playbook, the series' view of Mallet's cost. |
-| [local-ai-studios.md](local-ai-studios.md) | The GPU PC's generation suite | Exact HTTP APIs for Flux, Hunyuan and **Audio Studio** (music, SFX, foley, voice), the Hunyuan stage scripts, concept-image routes, the figure standard, GPU etiquette. |
+| [local-ai-studios.md](local-ai-studios.md) | The GPU PC's generation suite | Exact HTTP APIs for Flux, Hunyuan and **Audio Studio** (music, SFX, foley, voice), the Hunyuan stage scripts, concept-image routes, the figure standard, GPU etiquette. *(added 2026-11-26)* **Reaching the studios from a cloud session or another machine over SSH + Tailscale** (`tools/connect-gpu-pc.sh`). |
 
 ## Rules primers
 | Primer | Edition |
